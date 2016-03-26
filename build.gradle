@@ -1,0 +1,32 @@
+group 'xonix'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    testCompile 'org.jmockit:jmockit:1.22'
+    testCompile 'org.testng:testng:6.9.9'
+    testCompile 'org.uncommons:reportng:1.1.4'
+}
+
+test {
+    useTestNG()
+
+    //makes the standard streams (err and out) visible at console when running tests
+    testLogging.showStandardStreams = true
+
+    //listening to test execution events
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message)
+    }
+}
